@@ -46,7 +46,26 @@ const tables = () => {
     tableDep();
     tableRole();
     tableEmp();    
-}
+};
+
+const addDep = () => {
+    inquirer
+    .prompt({
+        name: "dep",
+        type: "input",
+        message: "What is the department name?"
+    })
+    .then((input) => {
+        const sql = `INSERT INTO department (name) 
+                        VALUE ("${input.dep}")`
+           connection.query(sql, (err) => {
+               if(err) throw err;
+               tableDep();
+           })
+      
+    })
+};
+
 const addRole = () => {
 
     inquirer
@@ -77,49 +96,66 @@ const addRole = () => {
                tableRole();
            })
         })
-}
+};
 
-const addDep = () => {
+const addEmp = () => {
     inquirer
-        .prompt({
-            name: "depName",
+    .prompt([
+        {
+            name: "first",
             type: "input",
-            message: "What is the departments name?"
-        })
-        .then((input) => {
-            
-           const sql = `INSERT INTO department (name) VALUE ("${input.depName}")`
+            message: "What is the employee's first name?"
+        },
+        {
+            name: "last",
+            type: "input",
+            message: "What is the employee's last name?"
+        },
+        {
+            name: "role",
+            type: "input",
+            message: "What is the employee's role?"
+        },
+        {
+            name: "manager",
+            type: "input",
+            message: "Who is the manager?"
+        }
+    ])
+    .then((input) => {
+        const sql = `INSERT INTO employee (first_name, last_name, role_id, manager_id) 
+                        VALUE ("${input.first}", "${input.last}", ${input.role}, ${input.manager})`
            connection.query(sql, (err) => {
                if(err) throw err;
-               tableDep();
+               tableRole();
            })
-        })
-}
+      
+    })
+};
 
 const add = () => {
     inquirer
         .prompt({
             name: "action",
             type: "list",
-            message: "Which would you like to add?",
+            message: "Choose which to add",
             choices: [
                 "Department",
                 "Role",
-                "Employee"
+                "Employee",
+                "Exit"
             ]
         })
         .then((userResponse) => {
             switch (userResponse.action) {
                 case "Department":
-                    console.log("departments")
                     addDep();
                     break;
                 case "Role":
-                    console.log("roles")
-                    addRole()
+                    addRole();
                     break;
                 case "Employee":
-                    console.log("Employees")
+                    addEmp();
                     break;
                 default:
                     connection.end();
@@ -129,6 +165,88 @@ const add = () => {
         })
 };  
 
+const delDep = () => {
+    inquirer
+        .prompt({
+            name: "del",
+            type: "input",
+            message: "Choose an id to delete"
+        })
+        .then((input) => {
+            const sql = `DELETE FROM department WHERE id = ${input.del} `
+            connection.query(sql, (err) => {
+                if(err) throw err;
+                tableDep();
+            })
+        })
+};
+
+
+const delRole = () => {
+    inquirer
+        .prompt({
+            name: "del",
+            type: "input",
+            message: "Choose an id to delete"
+        })
+        .then((input) => {
+            const sql = `DELETE FROM role WHERE id = ${input.del} `
+            connection.query(sql, (err) => {
+                if(err) throw err;
+                tableRole();
+                
+            })
+        })
+};
+
+
+const delEmp = () => {
+    inquirer
+        .prompt({
+            name: "del",
+            type: "input",
+            message: "Choose an id to delete"
+        })
+        .then((input) => {
+            const sql = `DELETE FROM employee WHERE id = ${input.del} `
+            connection.query(sql, (err) => {
+                if(err) throw err;
+                tableEmp();
+            })
+        })
+};
+
+const del = () => {
+    inquirer
+        .prompt({
+            name: "action",
+            type: "list",
+            message: "Choose which to Delete",
+            choices: [
+                "Department",
+                "Role",
+                "Employee",
+                "Exit"
+            ]
+        })
+        .then((userResponse) => {
+            switch (userResponse.action) {
+                case "Department":
+                    delDep();
+                    break;
+                case "Role":
+                    delRole();
+                    break;
+                case "Employee":
+                    delEmp();
+                    break;
+                default:
+                    connection.end();
+                    process.exit(0);
+                    break;
+            }
+        })
+};
 
 const mainMenu = () => {
     
@@ -159,6 +277,7 @@ const mainMenu = () => {
                     break;
                 case "delete id":
                     console.log("delete")
+                    del();
                     break;
             
                 default:

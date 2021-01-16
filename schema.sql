@@ -1,3 +1,6 @@
+-- add a thing for managers
+
+
 DROP DATABASE IF EXISTS empTrackerDB;
 
 CREATE DATABASE empTrackerDB;
