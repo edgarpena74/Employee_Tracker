@@ -61,6 +61,7 @@ const addDep = () => {
            connection.query(sql, (err) => {
                if(err) throw err;
                tableDep();
+              
            })
       
     })
@@ -94,6 +95,7 @@ const addRole = () => {
            connection.query(sql, (err) => {
                if(err) throw err;
                tableRole();
+              
            })
         })
 };
@@ -127,7 +129,8 @@ const addEmp = () => {
                         VALUE ("${input.first}", "${input.last}", ${input.role}, ${input.manager})`
            connection.query(sql, (err) => {
                if(err) throw err;
-               tableRole();
+               tableEmp();
+              
            })
       
     })
@@ -165,6 +168,31 @@ const add = () => {
         })
 };  
 
+const update = () => {
+    inquirer
+        .prompt([
+            {
+                name: "id",
+                type: "input",
+                message: "Choose the id of the employee you wish to update",
+
+            },
+            {
+                name: "role",
+                type: "input",
+                message: "Update the new role by entering the role's id number"
+            }
+
+        ])
+        .then((input) => {
+            const sql = `UPDATE employee SET role_id = ${input.role} where id = ${input.id}`
+            connection.query(sql, (err) => {
+                if (err) throw err;
+                tableEmp();
+            })
+        })
+};
+
 const delDep = () => {
     inquirer
         .prompt({
@@ -177,6 +205,7 @@ const delDep = () => {
             connection.query(sql, (err) => {
                 if(err) throw err;
                 tableDep();
+                
             })
         })
 };
@@ -194,7 +223,7 @@ const delRole = () => {
             connection.query(sql, (err) => {
                 if(err) throw err;
                 tableRole();
-                
+               
             })
         })
 };
@@ -212,8 +241,10 @@ const delEmp = () => {
             connection.query(sql, (err) => {
                 if(err) throw err;
                 tableEmp();
+                
             })
         })
+        
 };
 
 const del = () => {
@@ -258,8 +289,8 @@ const mainMenu = () => {
             choices: [
                 "Add departments, roles, employees",
                 "View department, roles, employees",
-                "Update employee roles",
-                "delete id",
+                "Update employee",
+                "Delete departments, roles, employees",
                 "Exit"
             ]
 
@@ -272,11 +303,11 @@ const mainMenu = () => {
                 case "View department, roles, employees":
                     tables();
                     break;
-                case "Update employee roles":
-                    console.log(update)
+                case "Update employee":
+                    console.log("update")
+                    update();
                     break;
-                case "delete id":
-                    console.log("delete")
+                case "Delete departments, roles, employees":
                     del();
                     break;
             
@@ -286,4 +317,4 @@ const mainMenu = () => {
                     break;
             }
         })
-}
+};
