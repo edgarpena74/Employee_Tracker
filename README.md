@@ -25,6 +25,8 @@ Git Bash => node app.js
 
 Open a terminal and type node app.js then you can choose to create, add, delete, or update employee information.
 
+![gif](./Assets/et4.gif)
+
 ## Tests
 
 ## Questions
