@@ -19,7 +19,7 @@ This is an application ran on Git Bash. It is designed to allow the user to mana
 
 Git Bash => node app.js
 
-![screenshot](.\Assets\screenshot.png)
+![screenshot](./Assets/screenshot.png)
 
 ## Usage_Information
 
